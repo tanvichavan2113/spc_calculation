@@ -164,7 +164,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final response = await http.get(Uri.parse('http://localhost:3001/data'));
     if (response.statusCode == 200) {
       setState(() {
-        data = json.decode(response.body)['results'];
+        // Assuming the server returns data in ascending order based on the update timestamp
+        // If not, you may need to sort the data accordingly.
+        List<dynamic> results = json.decode(response.body)['results'];
+        data = [results.isNotEmpty ? results.last : null];
       });
     } else {
       throw Exception('Failed to load data');
@@ -185,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('X bar: ${data[index]['xbar']}'),
-                Text('Stdev Overall: ${data[index]['sd']}'),
+                Text('Stdev Overall ${data[index]['sd']}'),
                 Text('Pp: ${data[index]['pp']}'),
                 Text('Ppu: ${data[index]['ppu']}'),
                 Text('Ppl: ${data[index]['ppl']}'),
