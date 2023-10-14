@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:example/spcresultpage.dart';
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
+
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart'; // Import Fluttertoast
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Flutter PostgreSQL Demo',
       home: HomeScreen(),
     );
@@ -21,16 +20,12 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
   @override
-  // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   List data = [];
-
   TextEditingController valueController = TextEditingController();
 
   @override
@@ -41,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> fetchData() async {
     final response = await http.get(Uri.parse('http://localhost:3001/data'));
-
     if (response.statusCode == 200) {
       setState(() {
         data = json.decode(response.body)['results'];
@@ -53,8 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> addData() async {
     final double inputValue = double.tryParse(valueController.text) ?? 0.0;
-    final int timestamp =
-        data.length + 1; // Incremental timestamp starting from 1
+    final int timestamp = data.length + 1;
 
     if (inputValue != 0.0) {
       final response = await http.post(
@@ -64,29 +57,18 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
       if (response.statusCode == 200) {
-        // Show a popup message
         Fluttertoast.showToast(
           msg: 'Data added successfully',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
         );
 
-        // Clear the text field
         valueController.clear();
-
-        // Fetch data (if needed)
         fetchData();
       } else {
         throw Exception('Failed to add data');
       }
     }
-  }
-
-  void navigateToSPCResultPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SPCResultPage()),
-    );
   }
 
   @override
@@ -111,12 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
             onPressed: addData,
             child: const Text('Add Data'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              navigateToSPCResultPage(context);
-            },
-            child: const Text('spc result'),
           ),
         ],
       ),
