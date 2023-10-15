@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:example/spcresultpage.dart';
+import 'package:spcapp/spcresultpage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart'; // Import Fluttertoast
